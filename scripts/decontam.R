@@ -14,24 +14,47 @@ library(readxl)
 library(microViz)
 
 # load ps objects and other data ----
-countsDF <- read.delim("data/ransom/ransom-countmatrix-cleanedall.txt", sep = "\t") 
-met <- read_excel("/Users/stephanieclouser/OneDrive - The Pennsylvania State University/Shared-Projects/Ransom-AMR/3.Sample-Collection/Ransom-AMR-Metadata.xlsx")
-genes <- read.delim("data/ransom/ransom-geneinfo-all.txt", sep = "\t") %>%
+countsDF <- read.delim("data/countmatrix-cleaned.txt", sep = "\t") 
+met <- read_excel("kenya-metadata.xlsx")
+genes <- read.delim("data/geneinfo-all.txt", sep = "\t") %>%
   select(-c(MEG_ID)) %>%
   unique()
 
-ps <- readRDS("data/ransom/rawps.rds")
+ps <- readRDS("data/rawps.rds")
 
 # dummy code samples vs controls ----
 ps <- ps %>% 
   ps_mutate(
-    SampleBinary = if_else(str_detect(Sample.Type,"Control"), true = "Control", false = "Sample")
+    SampleBinary = if_else(str_detect(OperatorGender,"Control"), true = "Control", false = "Sample")
   ) 
+
+unknowns <- c("24-3", "2-3S", "23-1", "24-1")
+
+ps <- ps %>% 
+ subset_samples(
+   FarmID != "24-3"
+ )
+
+ps <- ps %>% 
+  subset_samples(
+    FarmID != "2-3S"
+  )
+
+ps <- ps %>% 
+  subset_samples(
+    FarmID != "23-1"
+  )
+
+ps <- ps %>% 
+  subset_samples(
+    FarmID != "24-1"
+  )
+
 
 ps <- ps %>% 
   ps_mutate(SampleBinary = case_when(
-    SampleBinary == "Control" & str_detect(Sample.Type, "Pos") ~ "Sample",
-    SampleBinary == "Control" & !str_detect(Sample.Type, "Pos") ~ "Control",
+    SampleBinary == "Control" & str_detect(OperatorGender, "Pos") ~ "Sample",
+    SampleBinary == "Control" & !str_detect(OperatorGender, "Pos") ~ "Control",
     SampleBinary == "Sample" ~ "Sample"
   ))
 
@@ -63,7 +86,7 @@ contams
 # remove contaminant sequences
 nocontam <- prune_taxa(!rownames(ps@tax_table) %in% contams, ps)
 
-saveRDS(nocontam, "data/full-run/decontam-ps.rds")
+saveRDS(nocontam, "data/decontam-ps.rds")
 
 ## Positive Control ----
 
@@ -71,7 +94,7 @@ zymo <- readRDS("/Users/stephanieclouser/OneDrive - The Pennsylvania State Unive
 
 # get positive controls after removing contaminants
 pspos <- nocontam %>% 
-  ps_filter(str_detect(Sample.Type, "Pos")) 
+  ps_filter(str_detect(OperatorGender, "Pos")) 
 
 ntaxa(pspos)
 
@@ -94,8 +117,8 @@ pssave <- pssave <- ps_filter(nocontam, SampleBinary == "Sample")
 pscount <- subset_taxa(ps, taxa_names(ps) %in% taxa_names(pssave))
 
 # remove positive controls
-ps.only.sample <- prune_samples(sample_data(pscount)$Sample.Type != "Positive-Control", pscount)
-ps.only.sample2 <- prune_samples(sample_data(ps.only.sample)$Sample.Type != "Negative-Control", ps.only.sample)
+ps.only.sample <- prune_samples(sample_data(pscount)$OperatorGender != "PositiveControl", pscount)
+ps.only.sample2 <- prune_samples(sample_data(ps.only.sample)$OperatorGender != "NegativeControl", ps.only.sample)
 
 
 # remove contaminant sequences
@@ -104,15 +127,15 @@ fin_nocontam <- subset_taxa(ps.only.sample2, !taxa_names(pscount) %in% taxa_name
 # removing SNP confirmation genes ----
 psfilt <- fin_nocontam %>% tax_select(tax_list = "SNP", strict_matches = FALSE, deselect = TRUE)
 
-Keep <- c("Cows", "Calves")
+Keep <- c("Male", "Female")
 
 psfilt <- subset_samples(
   psfilt, 
-  Group %in% Keep
+  OperatorGender %in% Keep
 )
 
 # save the decontaminated phyloseq object for downstrem analysis
-saveRDS(psfilt, file = "data/full-run/decontam-ps.rds")
+saveRDS(psfilt, file = "data/decontam-ps.rds")
 
 # save work
 save.image("data/decontam.RData")
