@@ -2,7 +2,8 @@
 # SAB 07/17/2023
 
 # color scheme: Viridis mako / microshades micro_cvd_blue
-color_palette <- c("#0070FF", "#D75CE0", "#FF5EAA", "#FF8C76", "#FFC55A", "#F9F871")
+color_palette <- c("#81007F", "#D75CE0", "#FF5EAA", "#FF8C76", "#FFC55A", "#F9F871")
+short_color <- c("#D75CE0", "#FFC55A")
 
 # load packages
 library(phyloseq)
