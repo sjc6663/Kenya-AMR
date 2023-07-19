@@ -58,10 +58,22 @@ psbclass <- aggregate_taxa(psrel, level = "Broadclass")
 # find and substitute
 taxa_names(psbclass) <- gsub(taxa_names(psbclass), pattern = "_", replacement = " ") 
 
-psbclass %>% plot_composition(group_by = "HighestLevelEducation", x.label = "OperatorGender") +
+A <- psbclass %>% plot_composition(group_by = "OperatorGender") +
   # scale_y_continuous(labels = percent) +
   # theme(legend.position = "none") +
   scale_fill_manual(values = color_palette) +
-  ggtitle("D")
+  ggtitle("A")
 
-ggsave(filename = "plots/full-run/relabund-averaged-bclass-gender.pdf", dpi = 600, width = 12, height = 14)
+sample_data(psbclass)$HighestLevelEducation <- factor(sample_data(psbclass)$HighestLevelEducation,
+                                                            levels = c("Primary Level", "Secondary Level", "Tertiary eduction", "Diploma/University degree"))
+
+
+B <- psbclass %>% plot_composition(group_by = "HighestLevelEducation", sample.sort = "OperatorGender", x.label = "OperatorGender") +
+  # scale_y_continuous(labels = percent) +
+  # theme(legend.position = "none") +
+  scale_fill_manual(values = color_palette) +
+  ggtitle("B")
+
+A/B
+
+ggsave(filename = "plots/relabund-gender-edu.pdf", dpi = 600, width = 10, height = 8)
