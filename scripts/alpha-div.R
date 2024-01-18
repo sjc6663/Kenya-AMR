@@ -21,7 +21,7 @@ library(misty)
 library(patchwork)
 
 # read in phyloseq object
-ps <- readRDS("data/decontam-ps.RDS")
+ps <- readRDS("bovine-host-resistome/decontam-ps.RDS")
 
 # create data frame ----
 # create data frame with relevant metadata for comparison
@@ -83,6 +83,9 @@ wtestABX # p = 0.74, ns
 # eduation
 wtestEDU <- oneway.test(Shannon ~ Edu, data = adiv, var.equal = FALSE)
 wtestEDU # p = 0.95, ns
+
+mod <- lm(Shannon ~ LastABXUse, data = adiv)
+summary(mod)
 
 # Violin Plots -----------------------------------------------------------------------------------------------
 # https://microbiome.github.io/tutorials/PlotDiversity.html 

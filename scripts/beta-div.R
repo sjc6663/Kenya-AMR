@@ -99,3 +99,56 @@ E <- psrel %>%
 (A/B/C)|(D/E)
 
 ggsave(filename = "plots/beta-div-all.pdf", dpi = 600, width = 15, height = 16)
+
+# beta diversity ----
+
+ait <- ps %>%
+  # transform to relative abundance
+  tax_transform("compositional", keep_counts = FALSE) %>%
+  dist_calc("aitchison")
+
+
+# test beta dispersion
+ait %>% dist_bdisp(variables = "OperatorGender") %>% bdisp_get() # p=0.105
+
+# test with PERMANOVA
+mod1 <- ait %>%
+  dist_permanova(
+    seed = 81299,
+    variables = "OperatorGender",
+    n_perms = 9999
+  )
+
+mod1 # R2 = 0.03, F(1, 65) = 1.88, P = 0.0001***
+
+C1 <- ait %>% 
+  # when no distance matrix or constraints are supplied, PCA is the default/auto ordination method, in this case we are using the already transformed object above with aitchison's distance, so we use PCoA
+  # tax_transform(trans = "clr") %>%
+  ord_calc(method = "PCoA") %>% 
+  ord_plot(color = "OperatorGender", size = 6, axes = c(2,3)) +
+  scale_color_manual(values = c("#D75CE0", "#FFC55A")) +
+  stat_ellipse(aes(group = OperatorGender, color = OperatorGender)) + 
+  theme_classic() +
+  labs(color = "Gender") +
+  ggtitle("C") + 
+  #labs(caption = "R2 = 0.03, F(1, 65) = 1.88, P = 0.0001***") +
+  theme(text = element_text(size = 20)) 
+C1
+
+C2 <- psrel %>% 
+  # when no distance matrix or constraints are supplied, PCA is the default/auto ordination method
+  tax_transform(trans = "clr") %>%
+  ord_calc(method = "PCA") %>% 
+  ord_plot(color = "OperatorGender", size = 6, axes = c(2,3)) +
+  scale_color_manual(values = c("#D75CE0", "#FFC55A")) +
+  stat_ellipse(aes(group = OperatorGender, color = OperatorGender)) + 
+  theme_classic() +
+  labs(color = "Gender") +
+  ggtitle("C") + 
+ # labs(caption = "R2 = 0.03, F(1, 65) = 1.88, P = 0.0001***") +
+  theme(text = element_text(size = 20)) 
+C2
+
+library(patchwork)
+C1|C2
+# this shows that these different codes produce essentially the same plot, which makes me feel a lot better about what I've been doing, lol.
