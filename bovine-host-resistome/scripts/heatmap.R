@@ -41,11 +41,16 @@ merge3 <- as.data.frame(merge3)
 merge3 <- column_to_rownames(merge3, "Class")
 names(merge3)[names(merge3) == "Broadclass"] <- "Resistance Type"
 
-#fix rownames like with genemeta2
+#fix rownames
 library(stringr)
 rownames(z3) <- str_replace_all(rownames(z3), "_", " ")#sub underscores with spaces
 rownames(z3) <- str_replace(rownames(z3), "resistance", "")#drop resistance because that's a given
 rownames(z3) <- str_replace_all(rownames(z3), "and", "+") #simplfy this to make shorter
+
+# edit rownames to match z3 matrix
+rownames(merge3) <- str_replace_all(rownames(merge3), "_", " ")#sub underscores with spaces
+rownames(merge3) <- str_replace(rownames(merge3), "resistance", "")#drop resistance because that's a given
+rownames(merge3) <- str_replace_all(rownames(merge3), "and", "+") #simplfy this to make shorter
 
 library(readxl)
 met <- read_excel("kenya-metadata.xlsx")
