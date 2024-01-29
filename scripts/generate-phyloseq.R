@@ -1,5 +1,5 @@
 #Integration of AMR++ output into phyloseq object for downstream analysis 
-#Stephanie Bierly - 07/11/2023
+#Stephanie Bierly - 11/15/23 
 
 #laod packges
 library(BiocManager)
@@ -15,9 +15,9 @@ library(ggplot2)
 library(readxl)
 
 #read in necessary files: count matrix, gene info, metadata---- 
-countsDF <- read.delim("data/countmatrix-cleaned.txt", sep = "\t") 
+countsDF <- read.delim("bovine-host-resistome/countmatrix-cleanedall.txt", sep = "\t") 
 met <- read_excel("kenya-metadata.xlsx")
-genes <- read.delim("data/geneinfo-all.txt", sep = "\t") %>%
+genes <- read.delim("bovine-host-resistome/geneinfo-all.txt", sep = "\t") %>%
   select(-c(MEG_ID)) %>%
   unique()
 
@@ -33,10 +33,10 @@ samp <- phyloseq::sample_data(met)
 rownames(samp) <- met$`SampleID`
 
 ps <- phyloseq::phyloseq(otutab, taxtab, samp)
-ps
+
 
 #save the ps object 
-saveRDS(ps, "data/rawps.rds")
+saveRDS(ps, "bovine-host-resistome/rawps.rds")
 
 #save work ----
 save.image("data/making-psobj.RData")

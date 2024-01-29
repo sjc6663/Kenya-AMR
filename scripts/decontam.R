@@ -1,5 +1,5 @@
 # Decontam
-## SAB 07/11/2023
+## SAB 11/16/2023
 
 # load packages ----
 library(BiocManager)
@@ -14,13 +14,13 @@ library(readxl)
 library(microViz)
 
 # load ps objects and other data ----
-countsDF <- read.delim("data/countmatrix-cleaned.txt", sep = "\t") 
+countsDF <- read.delim("bovine-host-resistome/countmatrix-cleanedall.txt", sep = "\t") 
 met <- read_excel("kenya-metadata.xlsx")
-genes <- read.delim("data/geneinfo-all.txt", sep = "\t") %>%
+genes <- read.delim("bovine-host-resistome/geneinfo-all.txt", sep = "\t") %>%
   select(-c(MEG_ID)) %>%
   unique()
 
-ps <- readRDS("data/rawps.rds")
+ps <- readRDS("bovine-host-resistome/rawps.rds")
 
 # dummy code samples vs controls ----
 ps <- ps %>% 
@@ -31,9 +31,9 @@ ps <- ps %>%
 unknowns <- c("24-3", "2-3S", "23-1", "24-1")
 
 ps <- ps %>% 
- subset_samples(
-   FarmID != "24-3"
- )
+  subset_samples(
+    FarmID != "24-3"
+  )
 
 ps <- ps %>% 
   subset_samples(
@@ -81,12 +81,12 @@ negps <- subset_samples(conps, is.neg == "TRUE")
 
 # remove contaminant sequences
 contams <- rownames(contamdf.prev[contamdf.prev$contaminant == "TRUE",])
-contams
+contams #135 gene contaminants
 
 # remove contaminant sequences
 nocontam <- prune_taxa(!rownames(ps@tax_table) %in% contams, ps)
 
-saveRDS(nocontam, "data/decontam-ps.rds")
+saveRDS(nocontam, "bovine-host-resistome/decontam-ps.rds")
 
 ## Positive Control ----
 
@@ -135,7 +135,7 @@ psfilt <- subset_samples(
 )
 
 # save the decontaminated phyloseq object for downstrem analysis
-saveRDS(psfilt, file = "data/decontam-ps.rds")
+saveRDS(psfilt, file = "bovine-host-resistome/decontam-ps.rds")
 
 # save work
 save.image("data/decontam.RData")
