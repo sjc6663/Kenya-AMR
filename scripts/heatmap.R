@@ -17,7 +17,7 @@ library(ggplot2)
 
 
 # load phyloseq object
-ps <- readRDS("bovine-host-resistome/decontam-ps.RDS")
+ps <- readRDS("data/decontam-ps.RDS")
 
 # transform to relative abundance
 psrel <- microbiome::transform(ps, "compositional")
@@ -78,7 +78,7 @@ rownames(merge3) <- str_replace_all(rownames(merge3), "and", "+") #simplfy this 
 
 # import metadata to assign variables at the top of the heatmap
 # read in metadata
-met <- read_excel("kenya-metadata.xlsx")
+met <- read_excel("data/kenya-metadata.xlsx")
 # convert the sample IDs to rownames
 met <- column_to_rownames(met, "SampleID")
 # select only the columns we want
@@ -113,7 +113,7 @@ heat <- pheatmap(z3,
          border_color = NA)
 
 # save the heatmap for export purposes
-ggsave(heat, filename = "asm-heatmap-kenya.jpg", dpi = 600, width = 12, height = 12) # can save as .jpg or .pdf
+ggsave(heat, filename = "plots/asm-heatmap-kenya.jpg", dpi = 600, width = 12, height = 12) # can save as .jpg or .pdf
 
 
 

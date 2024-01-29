@@ -18,7 +18,7 @@ require(patchwork)
 set.seed(812)
 
 # load phyloseq object
-ps <- readRDS("bovine-host-resistome/decontam-ps.RDS")
+ps <- readRDS("data/decontam-ps.RDS")
 
 color_palette <- c("#45337d", "#2e6f8f", "#218f8c", "#83a561", "#bfdb81", "#1fa187")
 four_color <- c("#eae69e", "#bfdb81", "#83a561", "#48723e")

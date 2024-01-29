@@ -18,7 +18,7 @@ require(patchwork)
 set.seed(812)
 
 # load phyloseq object
-ps <- readRDS("bovine-host-resistome/decontam-ps.RDS")
+ps <- readRDS("data/decontam-ps.RDS")
 
 color_palette <- c("#45337d", "#2e6f8f", "#218f8c", "#83a561", "#bfdb81", "#1fa187")
 four_color <- c("#eae69e", "#bfdb81", "#83a561", "#48723e")
@@ -46,7 +46,7 @@ A <- psbclass %>% plot_composition(average_by = "HerdSize") +
   scale_x_discrete(labels = function(x) lapply(strwrap(x, width = 10, simplify = FALSE), paste, collapse="\n")) +
   ggtitle("A")
 
-#ggsave(A, file = "bovine-host-resistome/plots/size-relabund.tiff", dpi = 600)
+#ggsave(A, file = "plots/size-relabund.tiff", dpi = 600)
 
 # Descriptive Stats --- Relative Abundance Percentages ----
 
@@ -103,7 +103,7 @@ B <- plot_richness(ps, x="HerdSize", measures=c("Shannon"), color = "HerdSize") 
   theme(text = element_text(size = 20), axis.title = element_text(size = 20)) +
   ggtitle("B")
 
-#ggsave(B, file = "bovine-host-resistome/plots/size-alpha.tiff", dpi = 600)
+#ggsave(B, file = "plots/size-alpha.tiff", dpi = 600)
 
 # Beta Diversity --- PERMANOVA and PCoA ----
 

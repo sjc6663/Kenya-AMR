@@ -18,7 +18,7 @@ require(patchwork)
 set.seed(812)
 
 # load phyloseq object
-ps <- readRDS("bovine-host-resistome/decontam-ps.RDS")
+ps <- readRDS("data/decontam-ps.RDS")
 
 color_palette <- c("#45337d", "#2e6f8f", "#218f8c", "#83a561", "#bfdb81", "#1fa187")
 four_color <- c("#eae69e", "#bfdb81", "#83a561", "#48723e")
@@ -50,7 +50,7 @@ A <- psbclass %>% plot_composition(average_by = "HighestLevelEducation") +
   ggtitle("A")
 A
 
-#ggsave(A, file = "bovine-host-resistome/plots/education-relabund.pdf", dpi = 600)
+#ggsave(A, file = "plots/education-relabund.pdf", dpi = 600)
 
 # Descriptive Stats --- Relative Abundance Percentages ----
 
@@ -104,7 +104,7 @@ B <- plot_richness(ps, x="HighestLevelEducation", measures=c("Shannon"), color =
   ggtitle("B") +
   scale_x_discrete(labels = function(x) lapply(strwrap(x, width = 10, simplify = FALSE), paste, collapse="\n"))
 
-#ggsave(B, file = "bovine-host-resistome/plots/education-alpha.tiff", dpi = 600)
+#ggsave(B, file = "plots/education-alpha.tiff", dpi = 600)
 
 # Beta Diversity --- PERMANOVA and PCoA ----
 

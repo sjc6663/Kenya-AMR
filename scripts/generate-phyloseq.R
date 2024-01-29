@@ -15,9 +15,9 @@ library(ggplot2)
 library(readxl)
 
 #read in necessary files: count matrix, gene info, metadata---- 
-countsDF <- read.delim("bovine-host-resistome/countmatrix-cleanedall.txt", sep = "\t") 
-met <- read_excel("kenya-metadata.xlsx")
-genes <- read.delim("bovine-host-resistome/geneinfo-all.txt", sep = "\t") %>%
+countsDF <- read.delim("data/countmatrix-cleanedall.txt", sep = "\t") 
+met <- read_excel("data/kenya-metadata.xlsx")
+genes <- read.delim("data/geneinfo-all.txt", sep = "\t") %>%
   select(-c(MEG_ID)) %>%
   unique()
 
@@ -36,7 +36,4 @@ ps <- phyloseq::phyloseq(otutab, taxtab, samp)
 
 
 #save the ps object 
-saveRDS(ps, "bovine-host-resistome/rawps.rds")
-
-#save work ----
-save.image("data/making-psobj.RData")
+saveRDS(ps, "data/rawps.rds")

@@ -19,11 +19,14 @@ require(patchwork)
 remotes::install_github("adrientaudiere/MiscMetabar")
 library(MiscMetabar)
 
+# load phyloseq object
+ps <- readRDS("data/decontam-ps.RDS")
+
 test <- as_binary_otu_table(ps, min_number = 1)
 
 bin <- test
 
-saveRDS(bin, file = "bovine-host-resistome/binary-ps.RDS")
+saveRDS(bin, file = "data/binary-ps.RDS")
 
 # aggregate taxa ----
 psbclass <- aggregate_taxa(bin, level = "Broadclass")
