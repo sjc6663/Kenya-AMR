@@ -36,15 +36,15 @@ psbclass <- aggregate_taxa(psrel, level = "Broadclass")
 # find and substitute
 taxa_names(psbclass) <- gsub(taxa_names(psbclass), pattern = "_", replacement = " ") 
 
-A <- psbclass %>% plot_composition(average_by = "HerdSize") +
+#A <- psbclass %>% plot_composition(average_by = "HerdSize") +
   # scale_y_continuous(labels = percent) +
   # theme(legend.position = "none") +
-  scale_fill_manual(values = color_palette) + 
-  theme_bw() +
-  labs(x = " ", y = "Relative Abundance", fill = "Resistance Type") +
-  theme(text = element_text(size = 20), axis.title = element_text(size = 20)) +
-  scale_x_discrete(labels = function(x) lapply(strwrap(x, width = 10, simplify = FALSE), paste, collapse="\n")) +
-  ggtitle("A")
+#  scale_fill_manual(values = color_palette) + 
+#  theme_bw() +
+#  labs(x = " ", y = "Relative Abundance", fill = "Resistance Type") +
+#  theme(text = element_text(size = 20), axis.title = element_text(size = 20)) +
+#  scale_x_discrete(labels = function(x) lapply(strwrap(x, width = 10, simplify = FALSE), paste, collapse="\n")) +
+#  ggtitle("A")
 
 #ggsave(A, file = "plots/size-relabund.tiff", dpi = 600)
 
@@ -59,11 +59,31 @@ phy <- mps %>% tax_glom(taxrank = "Broadclass") %>% transform_sample_counts(func
 # select only relevant columns
 phy <- select(phy, c("Sample", "Abundance", "Broadclass"))
 
-# get abundance as a percent and round to whole numbers
-phy$percent <- phy$Abundance * 100
-phy$percent <- round(phy$percent, digits = 0)
-
 phy
+
+## Plot with Percentages of Relative Abundance
+
+phy$Sample <- factor(phy$Sample, levels = c("Less than 3", "More than 3"))
+
+
+phy %>% 
+  mutate(percent_labels = scales::percent(Abundance, accuracy = .01L)) %>% 
+  ggplot(aes(x = Sample, y = Abundance, fill = Broadclass)) +
+  geom_col() +
+  geom_text(
+    aes(label = percent_labels), 
+    position = position_stack(vjust = 0.5),
+    col = "white"
+  ) + 
+  scale_y_continuous(labels = scales::percent_format()) +
+  scale_fill_manual(values = color_palette) +
+  theme_bw() +
+  labs(x = " ", y = "Relative Abundance", fill = "Resistance Type") +
+  theme(text = element_text(size = 20), axis.title = element_text(size = 20)) +
+  scale_x_discrete(labels = function(x) lapply(strwrap(x, width = 10, simplify = FALSE), paste, collapse="\n"))
+
+
+ggsave(filename = "plots/size-relabund-percents.pdf", dpi = 600)
 
 # Alpha Diversity --- Linear Regression and Violin Plots ----
 
