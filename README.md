@@ -28,17 +28,11 @@ This R script takes the count matrix, the gene info, and the metadata and combin
 ### decontam.R
 This R script utilizes the decontam package to remove putative contaminant AMRg found in the negative controls sequenced with samples. 
 
-### gender.R
-This R script runs statistical tests for alpha and beta diversity by gender and creates a relative abundance plot, a boxplot for alpha diversity, and a PCoA for beta diversity, all for gender of primary farm operator. 
+### resistome-alpha-diversity.R
+This R script runs statistical tests for alpha diversity by gender, education, and herd size and creates a boxplot for alpha diversity by herd size, gender, and education.  
 
-### education.R
-This R script runs statistical tests for alpha and beta diversity by education level and creates a relative abundance plot, a boxplot for alpha diversity, and a PCoA for beta diversity, all for highest level of education of primary farm operator. 
-
-### herdsize-3.R
-This R script runs statistical tests for alpha and beta diversity by herd size (greater than or less than/equal to 3) and creates a relative abundance plot, a boxplot for alpha diversity, and a PCoA for beta diversity, all for herd size. 
+### resistome-beta-diversity.R
+This R script runs statistical tests for beta diversity by gender, education, and herd size and creates a PCoA for beta diversity by herd size, gender, and education.  
 
 ### heatmap.R
 This R script generates a heatmap for AMRg at the Class level for all samples. It also adds identifier information to the samples for gender and highest level of education for primary farm operator. 
-
-### presence-absence-binary.R
-This R script converts the OTU table to a binary format to use for presence/absence of AMRg for analysis. 
