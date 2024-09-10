@@ -14,7 +14,7 @@ This file contains the gene information for all AMRg aligned via the AMRPlusPlus
 ### kenya-metadata.xlsx
 This file contains the anonymous metadata for all samples in the study. 
 
-### decontam-ps.rds
+### decontam-ps-fixed.rds
 This file is the post-decontam phyloseq object used for all analysis of data. 
 
 ## Scripts
