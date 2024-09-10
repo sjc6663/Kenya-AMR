@@ -90,25 +90,25 @@ saveRDS(nocontam, "bovine-host-resistome/decontam-ps.rds")
 
 ## Positive Control ----
 
-zymo <- readRDS("/Users/stephanieclouser/OneDrive - The Pennsylvania State University/Shared-Projects/1.Tutorials/ZymoAMR/zymo-amr.rds")
+# zymo <- readRDS("/Users/stephanieclouser/OneDrive - The Pennsylvania State University/Shared-Projects/1.Tutorials/ZymoAMR/zymo-amr.rds")
 
 # get positive controls after removing contaminants
-pspos <- nocontam %>% 
-  ps_filter(str_detect(OperatorGender, "Pos")) 
+# pspos <- nocontam %>% 
+#  ps_filter(str_detect(OperatorGender, "Pos")) 
 
-ntaxa(pspos)
+# ntaxa(pspos)
 
-ntaxa(zymo)
+# ntaxa(zymo)
 
-get_taxa_unique(pspos)
-get_taxa_unique(zymo)
+# get_taxa_unique(pspos)
+# get_taxa_unique(zymo)
 
 # we don't want to remove the metals and biocides since we can't compare them to the zymo so we filter out only the drugs and multi-compounds
-pstruepos <- subset_taxa(pspos, Broadclass == "Drugs")
-get_taxa_unique(pstruepos)
+# pstruepos <- subset_taxa(pspos, Broadclass == "Drugs")
+# get_taxa_unique(pstruepos)
 
 # get what we want to remove
-psposrm <- subset_taxa(pstruepos, !taxa_names(pstruepos) %in% taxa_names(zymo))
+# psposrm <- subset_taxa(pstruepos, !taxa_names(pstruepos) %in% taxa_names(zymo))
 
 # we need to remove the negative control from the sample set
 pssave <- pssave <- ps_filter(nocontam, SampleBinary == "Sample")
@@ -122,10 +122,10 @@ ps.only.sample2 <- prune_samples(sample_data(ps.only.sample)$OperatorGender != "
 
 
 # remove contaminant sequences
-fin_nocontam <- subset_taxa(ps.only.sample2, !taxa_names(pscount) %in% taxa_names(psposrm))
+# fin_nocontam <- subset_taxa(ps.only.sample2, !taxa_names(pscount) %in% taxa_names(psposrm))
 
 # removing SNP confirmation genes ----
-psfilt <- fin_nocontam %>% tax_select(tax_list = "SNP", strict_matches = FALSE, deselect = TRUE)
+psfilt <- ps.only.sample2 %>% tax_select(tax_list = "SNP", strict_matches = FALSE, deselect = TRUE)
 
 Keep <- c("Male", "Female")
 
@@ -135,7 +135,7 @@ psfilt <- subset_samples(
 )
 
 # save the decontaminated phyloseq object for downstrem analysis
-saveRDS(psfilt, file = "bovine-host-resistome/decontam-ps.rds")
+saveRDS(psfilt, file = "data/decontam-ps-fixed.rds")
 
 # save work
 save.image("data/decontam.RData")
