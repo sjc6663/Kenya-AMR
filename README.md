@@ -29,6 +29,9 @@ This R script takes the count matrix, the gene info, and the metadata and combin
 This R script utilizes the decontam package to remove putative contaminant AMRg found in the negative controls sequenced with samples. 
 
 ### resistome-alpha-diversity.R
+This R script creates a barplot with percentages for all samples separated by resistome classification (drug, biocide, metal, or multi-compound resistance).  
+
+### resistome-alpha-diversity.R
 This R script runs statistical tests for alpha diversity by gender, education, and herd size and creates a boxplot for alpha diversity by herd size, gender, and education.  
 
 ### resistome-beta-diversity.R
