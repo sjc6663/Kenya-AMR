@@ -28,7 +28,7 @@ This R script takes the count matrix, the gene info, and the metadata and combin
 ### decontam.R
 This R script utilizes the decontam package to remove putative contaminant AMRg found in the negative controls sequenced with samples. 
 
-### resistome-alpha-diversity.R
+### barplot.R
 This R script creates a barplot with percentages for all samples separated by resistome classification (drug, biocide, metal, or multi-compound resistance).  
 
 ### resistome-alpha-diversity.R
